@@ -1,0 +1,48 @@
+[user]
+	name = Adam Huang
+	email = adam.huang@ptn.advantest.com
+[alias]
+	cbl = !gitate cbl
+	check-commit-msg = !gitate check-commit-msg
+	create-br = !gitate create-br
+	create-ws = !gitate create-ws
+	disintegrate = !gitate disintegrate
+	drop = !gitate drop
+	feature-changed-files = !gitate feature-changed-files
+	get-br = !gitate get-br
+	integrate = !gitate integrate
+	mine = !gitate mine
+	mkbl = !gitate mkbl
+	mkpullreq = !gitate mkpullreq
+	mkrelbranch = !gitate mkrelbranch
+	mkreltag = !gitate mkreltag
+	pick-rfd = !gitate pick-rfd
+	pullreqs = !gitate pullreqs
+	push-deploy = !gitate push-deploy
+	push-master = !gitate push-master
+	qbl = !gitate qbl
+	remove-br = !gitate remove-br
+	remove-ws = !gitate remove-ws
+	sync = !gitate sync
+	trackings = !gitate trackings
+	update = !gitate update
+	url = !gitate url
+	yours = !gitate yours
+	ate = !gitate
+#personalization
+    st =status
+    co = checkout
+    ci = commit
+    br = branch
+    ;lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+    lg = "log --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --author Adam --stat -n"
+[color]
+	ui = true
+[diff]
+	tool = kompare
+[merge]
+	tool = kdiff3
+[mergetool]
+	keepBackup = false
+[push]
+	default = matching
