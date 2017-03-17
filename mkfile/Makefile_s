@@ -1,0 +1,23 @@
+CPP = /usr/bin/g++ -m64 -g
+LD = /usr/bin/g++ -m64 -g
+
+TCCT_PATH = /workspaces/atslxws155/adahuang/ws-tcct-r2-dev-adahuang/workspace/
+  
+INCLUDES =  -I $(TCCT_PATH)/system/include/xoc/tcapi
+LIB_PATHS = -L $(TCCT_PATH)/system/lib \
+			-Wl,-rpath,:$(TCCT_PATH)/system/lib
+           
+
+CPPFLAGS = $(INCLUDES)
+LDFLAGS = $(LIB_PATHS) -ltest_cell_api 
+
+
+SRCS = $(shell ls *.cpp)
+OBJS = $(SRCS:.cpp=.o)
+
+all: client 
+clean: ; @rm -f $(OBJS); rm -f core*; rm -f client 
+client: $(OBJS)
+	${LD} $(OBJS) $(LDFLAGS) -o $@
+.cpp.o:
+	${CPP} $(CPPFLAGS)  -c $<
