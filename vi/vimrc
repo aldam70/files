@@ -201,62 +201,58 @@ map<expr><C-F10> cscope_connection()?":cs reset<CR>":":cs add cscope.out<CR>"
 									"reload cscope
 
 "taglist.vim
-let Tlist_Show_One_File=1			"设置Tlist对象仅为当前文件
-let Tlist_Exit_OnlyWindow=1			"设置窗口关闭，当Tlist为仅存窗口时
-let Tlist_Show_Menu=1				"显示菜单
-set updatetime=1500					"设置Tlist刷新时间
+let Tlist_Show_One_File=1               "set tlist obj to current file
+let Tlist_Exit_OnlyWindow=1             "when the tlist is the only window, close it
+let Tlist_Show_Menu=1                   "show menu
+set updatetime=1500                     "flash timing
 
 "BufExplorer.vim
-let g:bufExplorerDefaultHelp=0		"显示帮助
-let g:bufExplorerFindActive=0		"激活窗口
-let g:bufExplorerSplitRight=1		"设置位置
+let g:bufExplorerDefaultHelp=0          "show helps
+let g:bufExplorerFindActive=0           "active window
+let g:bufExplorerSplitRight=1           "position
 
 "minibufexpl.vim
-let g:miniBufExplMapWindowNavVim=1		"设置快捷移动：ctrl+hjkl快捷移动
-let g:miniBufExplMapWindowNavArrows=1	"设置快捷移动：ctrl+方向键快捷移动
-let g:miniBufExplorerMoreThanOne=1		"窗口数为1时设置minibuf启动
-let g:miniBufExplForceSyntaxEnable=0	"防止语法高亮消失
-let g:miniBufExplModSelTarget=1			"防止插件窗口被buf窗口抢占
-let g:miniBufExplMapCTabSwitchBufs=1	"设置<C-Tab>快捷键
+let g:miniBufExplMapWindowNavVim=1      "enable ctrl+hjkl
+let g:miniBufExplMapWindowNavArrows=1   "enable ctrl+up/down/leaf/right
+let g:miniBufExplorerMoreThanOne=1      "minibuf will still enable when there is only one window
+let g:miniBufExplForceSyntaxEnable=0    "prevent the highlight missing
+let g:miniBufExplModSelTarget=1         "prevent buff window to occupy the minibuf
+let g:miniBufExplMapCTabSwitchBufs=1    "set <C-Tab> enable
 
 "winmanager.vim
-"宽度，窗口数为1时退出vim，窗口布局
+"width,quit when only 1 window left, layout
 let g:winManagerWidth=30
 let g:persistentBehaviour=0
 let g:winManagerWindowLayout='FileExplorer,BufExplorer|TagList'
 
 "showemarks.vim
-"<leader>命令：mt(开启/关闭),mh(删除当前行),ma(删除当前文件)
-"显示所有字母标记位，g'进行mark跳转，高亮，F2论询
+"<leader> mt(enable/disable),mh(remove mark),ma(remove marks on this file)
 let g:showmarks_include="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-let showmarks_hlline_lower=1
+let showmarks_hlline_lower=1            "highlight
 let showmarks_hlline_upper=1
+"next/prev
 map<F2> ]`
 map<S-F2> [`
 
-"mark.vim
-"修改vim文件后，更改部分快捷键
-"<leader>vv|nn|rr用于标记、清除、查找，原有<leader>*|#|/|?论询功能不变
-
 "omnicomplete.vim & omnicppcomplete.vim
-set completeopt=longest,menu			"关闭预览窗口
-set wildignore=*.o,*.obj,*~,*.pyc		"文件补全忽略项
-let OmniCpp_SelectFirstItem=0			"自动选择第一行
-let OmniCpp_ShowPrototypeInAbbr=1		"函数原型
-"i模式映射：补全菜单存在时，<cr>选中、<c-j>下翻页/弹出菜单、<c-k>上翻页
+set completeopt=longest,menu            "disable previous window
+set wildignore=*.o,*.obj,*~,*.pyc       "ignore files
+let OmniCpp_SelectFirstItem=0           "auto select first line
+let OmniCpp_ShowPrototypeInAbbr=1       "prototype of function
+"insert mapping：<cr> to chose; <c-j> page down; <c-k> page up
 inoremap<expr><cr>	pumvisible()?"\<c-y>":"\<cr>"
 inoremap<expr><c-j>	pumvisible()?"\<PageDown>\<c-n>\<c-p>":"\<c-x><c-o>"
 inoremap<expr><c-k>	pumvisible()?"\<PageUp>\<c-p>\<c-n>":"\<c-k>"
-"i模式映射：文件名补齐、宏定义补齐、tags补齐
+"insert mapping: complete file name; complete macro; complete tags
 inoremap<c-f> <c-x><c-f>
 inoremap<c-b> <c-x><c-d>
 inoremap<c-]> <c-x><c-]>
 
 "grep.vim
-"quickfix自动弹出，grep默认查找文件
+"quickfix auto popup，grep which files
 let Grep_OpenQuickfixWindow=1
 let Grep_Default_Filelist='*.c *.cpp *.h'
-"grep快捷键：n普通，a全匹配，c忽略case
+"grep: n normal, a complete match, c ignore case
 map<F3>n :Grep<cr>
 map<F3>a :Grep <C-R>=printf("\\<%s\\>", expand("<cword>"))<cr><cr>
 map<F3>c :Grep <C-R>=printf("-i %s", expand("<cword>"))<cr><cr>
@@ -275,14 +271,14 @@ map<F3>c :Grep <C-R>=printf("-i %s", expand("<cword>"))<cr><cr>
 "a.vim
 
 "nerdcommenter.vim
-"<leader>ci|cs|cc|cu				"single line/multi-lines/part/cancel annotation
+"<leader>ci|cs|cc|cu                "single line/multi-lines/part/cancel annotation
 
 "vimgdb
-let g:vimgdb_debug_file = ""		"initiate gdbfile
-run macros/gdb_mappings.vim			"vimgdb mapping
+let g:vimgdb_debug_file = ""        "initiate gdbfile
+run macros/gdb_mappings.vim         "vimgdb mapping
 
 "echofunc
-let g:EchoFuncShowOnStatus = 1		"function prototype shows on status line
+let g:EchoFuncShowOnStatus = 1      "function prototype shows on status line
 
 "acp
 let g:acp_behaviorKeywordCommand = "\<C-n>"
