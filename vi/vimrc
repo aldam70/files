@@ -86,7 +86,7 @@ set showmatch                       "show the matched symbols: e.g. ()
 set mat=2                           "match time
 
 "help file
-helptags ~/.vim/doc                 "generate help files
+"helptags ~/.vim/doc                "generate help files
 
 "search relate
 "set noignorecase                   "case sensitive : default
