@@ -8,20 +8,20 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-scripts/a.vim'
 Plugin 'vim-scripts/minibufexpl.vim'
 Plugin 'vim-scripts/taglist.vim'
-Plugin 'vim-scripts/AutoComplPop'
 Plugin 'vim-scripts/bufexplorer.zip'
 Plugin 'vim-scripts/winmanager'
 Plugin 'vim-scripts/Mark'
 Plugin 'vim-scripts/desertEx'
 Plugin 'vim-scripts/molokai'
 Plugin 'vim-scripts/ShowMarks'
-Plugin 'vim-scripts/c.vim'
+Plugin 'aldam70/vim_code_complete'
+Plugin 'aldam70/vim_AutoComplPop'
+"Plugin 'vim-scripts/c.vim'
 Plugin 'vim-scripts/cpp.vim'
 Plugin 'vim-scripts/OmniCppComplete'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'yegappan/grep'
 Plugin 'mbbill/echofunc'
-"Plugin 'mbbill/code_complete'
 call vundle#end()
 filetype plugin indent on
 
@@ -35,11 +35,11 @@ set encoding=utf-8
 "source $VIMRUNTIME/delmenu.vim     "del menu
 "source $VIMRUNTIME/menu.vim        "import menu
 if has("multi_byte")                "file encodings
-	set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,sjis,euc-kr,ucs-2le,latin1
+    set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,sjis,euc-kr,ucs-2le,latin1
 endif
 set gfn=Bitstream\ Vera\ Sans\ Mono\ 10,Luxi\ Mono\ 10,
-	\DejaVu\ Sans\ Mono\ 10,Courier\ New\ 10,Courier\ 10,
-	\SimSun\ 10,WenQuanYi\ Micro\ Hei\ Mono\ 10
+            \DejaVu\ Sans\ Mono\ 10,Courier\ New\ 10,Courier\ 10,
+            \SimSun\ 10,WenQuanYi\ Micro\ Hei\ Mono\ 10
                                     "font
 
 "perspective
@@ -84,6 +84,8 @@ set foldlevel=8                     "fold level
 "show match
 set showmatch                       "show the matched symbols: e.g. ()
 set mat=2                           "match time
+set mps+=<:>                        "match patterns
+set mps-=[:]
 
 "help file
 "helptags ~/.vim/doc                "generate help files
@@ -102,7 +104,7 @@ set nowrapscan                      "no auto wrap
 "insert mode quickly move
 inoremap<C-L> <Right>
 inoremap<C-H> <Left>
-inoremap <C-E> <del>
+inoremap<C-E> <del>
 "inoremap<C-S> <Down>
 "inoremap<C-W> <Up>
 imap <m-4> <esc>$a
@@ -126,21 +128,21 @@ set tags=tags;                      "set ctags obj to current dir
 set tags+=~/.vim/systags            "add system tags
 
 if has("cscope")                    "auto add cscope.out
-	set csprg=/usr/bin/cscope
-	set cst                         "set tag to cstag
-	set csto=0                      "the cscope will show first then cstag
-	set nocsverb                    "ignore missing cscope.out error
-	set cscopequickfix=s-,g-,c-,d-,i-,t-,e-,f-
+    set csprg=/usr/bin/cscope
+    set cst                         "set tag to cstag
+    set csto=0                      "the cscope will show first then cstag
+    set nocsverb                    "ignore missing cscope.out error
+    set cscopequickfix=s-,g-,c-,d-,i-,t-,e-,f-
                                     "cscope will match quickfix, '-' will truncate the previors result
-	let cscope=findfile("cscope.out", ".;")
-	if !empty(cscope) && filereadable(cscope)
-		let cscope_pre=getcwd()
-		let cscope_file=printf("%s/%s", cscope_pre, cscope)
-		exe "cs add" cscope_file cscope_pre
-	elseif $CSCOPE_DB != ""
-		cs add $CSCOPE_DB
-	endif
-	set csverb                      "set cscope error prompt
+    let cscope=findfile("cscope.out", ".;")
+    if !empty(cscope) && filereadable(cscope)
+        let cscope_pre=getcwd()
+        let cscope_file=printf("%s/%s", cscope_pre, cscope)
+        exe "cs add" cscope_file cscope_pre
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+    set csverb                      "set cscope error prompt
 endif
 
 map<expr><C-]> filewritable(bufname("%"))?"<C-]>,cw":"<C-]>"
@@ -194,11 +196,11 @@ map<F11> :execute "!ctags " cmdline tcctPath driverPath
 map<F12> :!ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ --file-scope=yes --langmap=c:+.h --languages=c,c++ --links=yes --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q  -f ~/.vim/systags /usr/include/* /usr/include/sys/* /usr/include/bits/*  /usr/include/netinet/* /usr/include/arpa/* /usr/include/mysql/* /usr/include/libxml2/*
 
 map<C-F11> :!find . -iname "*.h" -o -iname "*.c" -o -iname "*.cpp" -o -iname "*.hpp" > cscope.files<CR>
-		\:!cscope -Rbkq -i cscope.files -f cscope.out<CR>
-									"R recursive，b no gui，k ignore /usr/include，q assistant index
+            \:!cscope -Rbkq -i cscope.files -f cscope.out<CR>
+                                    "R recursive，b no gui，k ignore /usr/include，q assistant index
 
 map<expr><C-F10> cscope_connection()?":cs reset<CR>":":cs add cscope.out<CR>"
-									"reload cscope
+                                    "reload cscope
 
 "taglist.vim
 let Tlist_Show_One_File=1               "set tlist obj to current file
@@ -354,15 +356,15 @@ inoremap "" <c-r>=QuoteDelim('"')<CR>
 inoremap '' <c-r>=QuoteDelim("'")<CR>
 
 function! QuoteDelim(char)
-	let line = getline('.')
-	let col = col('.')
-	if line[col - 2] == "\\"
-		return a:char
-	elseif line[col - 1] == a:char
-		return "\<Right>"
-	else
-		return a:char.a:char."\<Esc>i"
-	endif
+    let line = getline('.')
+    let col = col('.')
+    if line[col - 2] == "\\"
+        return a:char
+    elseif line[col - 1] == a:char
+        return "\<Right>"
+    else
+        return a:char.a:char."\<Esc>i"
+    endif
 endf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "auto command
