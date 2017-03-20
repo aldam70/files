@@ -149,27 +149,33 @@ map<expr><C-]> filewritable(bufname("%"))?"<C-]>,cw":"<C-]>"
                                     "add quickfix
 
 " tags in work begin
-"VARIABLES
-"driver development path
-let envString = system('cat /etc/redhat-release')
-if envString == "Red Hat Enterprise Linux Workstation release 7.2 (Maipo)\n"
-    let driverWSPath = system('echo -n $WORKSPACE') . '/ph-development/development/'
-    let driverSourcePath = system('echo -n $WORKSPACE') . '/ph-development/development/drivers/Generic_93K_Driver/'
-    let handlerSourcePath = system('echo -n $WORKSPACE') . '/ph-development/development/drivers/Generic_93K_Driver/GenericHandler/'
-    let proberSourcePath = system('echo -n $WORKSPACE') . '/ph-development/development/drivers/Generic_93K_Driver/GenericProber/'
+if exists('/etc/redhat-release')
+    let envString = system('cat /etc/redhat-release')
 else
-    let driverSourcePath = '/opt/93000/src/tci/'
-    let handlerSourcePath = '/opt/93000/src/tci/handler/'
-    let proberSourcePath = '/opt/93000/src/tci/prober/'
+    let envString = ""
 endif
-"driver package path
-let pwdString = system('echo -n $PWD')
-if (match(pwdString, 'GenericHandler') != -1)
-    let pwdString = system('echo -n ${PWD%Generic*}') . "GenericHandler"
-elseif (match(pwdString, 'GenericProber') != -1)
-    let pwdString = system('echo -n ${PWD%Generic*}') . "GenericProber"
+
+"driver development path
+if envString != ""
+    if envString == "Red Hat Enterprise Linux Workstation release 7.2 (Maipo)\n"
+        let driverWSPath = system('echo -n $WORKSPACE') . '/ph-development/development/'
+        let driverSourcePath = system('echo -n $WORKSPACE') . '/ph-development/development/drivers/Generic_93K_Driver/'
+        let handlerSourcePath = system('echo -n $WORKSPACE') . '/ph-development/development/drivers/Generic_93K_Driver/GenericHandler/'
+        let proberSourcePath = system('echo -n $WORKSPACE') . '/ph-development/development/drivers/Generic_93K_Driver/GenericProber/'
+    else
+        let driverSourcePath = '/opt/93000/src/tci/'
+        let handlerSourcePath = '/opt/93000/src/tci/handler/'
+        let proberSourcePath = '/opt/93000/src/tci/prober/'
+    endif
+    "driver package path
+    let pwdString = system('echo -n $PWD')
+    if (match(pwdString, 'GenericHandler') != -1)
+        let pwdString = system('echo -n ${PWD%Generic*}') . "GenericHandler"
+    elseif (match(pwdString, 'GenericProber') != -1)
+        let pwdString = system('echo -n ${PWD%Generic*}') . "GenericProber"
+    endif
+    let tcctSourcePath = system('echo -n $WORKSPACE') . '/development/integration/cor/tcapi/'
 endif
-let tcctSourcePath = system('echo -n $WORKSPACE') . '/development/integration/cor/tcapi/'
 " tags in work end
 
 "ctags usage: ctags -R --c++-kinds=+p --fields=+iaS --extra=+q "c++ tags，params(1)function prototype，(2)class properties，(3)class members
@@ -182,6 +188,7 @@ map<F6> :!rm -rf ./tags
 map<F7> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .
 
 " tags in work begin
+if envString != ""
 "package tags
 map<F9> :execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q " pwdString
 "driver tags
@@ -190,6 +197,7 @@ map<F10> :execute "!ctags " cmdline driverPath
 "tcct tags
 let tcctPath = tcctSourcePath . "TestCellAPI/Main/ " . tcctSourcePath . "TestCellAccess/Main/ " . driverWSPath . "utility/DriverDevKits/Main " . driverWSPath "integration"
 map<F11> :execute "!ctags " cmdline tcctPath driverPath
+endif
 " tags in work end
 
 "system tags
