@@ -1,3 +1,4 @@
+"git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 "vundle control
 set nocompatible
 filetype off
@@ -25,83 +26,83 @@ call vundle#end()
 filetype plugin indent on
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"基础设置
+"basic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"语言编码
-set encoding=utf-8					"设置编码格式
-"set langmenu=zh_CN.UTF-8			"菜单语言
-"language messages zh_CN.UTF-8		"菜单语言
-"source $VIMRUNTIME/delmenu.vim		"删除菜单
-"source $VIMRUNTIME/menu.vim	    "导入菜单
-if has("multi_byte")				"设置fileencodings
+"encoding
+set encoding=utf-8
+"set langmenu=zh_CN.UTF-8           "menu lan
+"language messages zh_CN.UTF-8      "menu lan
+"source $VIMRUNTIME/delmenu.vim     "del menu
+"source $VIMRUNTIME/menu.vim        "import menu
+if has("multi_byte")                "file encodings
 	set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,sjis,euc-kr,ucs-2le,latin1
 endif
 set gfn=Bitstream\ Vera\ Sans\ Mono\ 10,Luxi\ Mono\ 10,
 	\DejaVu\ Sans\ Mono\ 10,Courier\ New\ 10,Courier\ 10,
 	\SimSun\ 10,WenQuanYi\ Micro\ Hei\ Mono\ 10
-									"设置字体
+                                    "font
 
-"界面格式
-syn on								"语法高亮
-"colorscheme desertEx				"颜色模式
+"perspective
+syn on
+"colorscheme desertEx
 colorscheme molokai
-set columns=188						"设置列数
-set lines=68						"设置行数
-set nu								"显示行号
-set mousemodel=popup				"右键菜单
-set gcr=a:blinkon0					"屏蔽光标闪烁
-set previewheight=10				"窗口初始高度
-"set cursorline						"设置光标行高亮
+set columns=188
+set lines=68
+set nu
+set mousemodel=popup                "right-click will pop up menu
+set gcr=a:blinkon0                  "disable cursor blink
+set previewheight=10                "preview window height
+"set cursorline                     "highlight the cursor line
 
-"键盘设定
-set tabstop=4						"tab宽度
-set expandtab
-set scrolloff=5						"设置光标5行上下文
-set backspace=2						"Backspace可用
-set whichwrap=b,s,<,>,[,]			"光标行首行末换行
+"keyboard
+set tabstop=4                       "tab width
+set expandtab                       "use space to replace tab
+set scrolloff=5                     "margin rows when the cursor reach top or bottom
+set backspace=2                     "enable backspace
+set whichwrap=b,s,<,>,[,]           "will skip to next row when the cursor reach the end of the row
 
-"文件设定
-set autoread						"自动读取外部修改文件
-set hidden							"隐藏修改缓冲区
-filetype plugin on					"文件类型检测
+"file relate
+set autoread                        "auto read when the file changed outside
+set hidden                          "will approve to change the buffer when the file has not been saved
+filetype plugin on                  "file type check
 
-"命令行设定
-set cmdheight=2						"命令行高度
-set cmdwinheight=5					"命令行窗口高度
-set history=200						"命令记录
-set wildmenu						"tab匹配命令
+"command line
+set cmdheight=2
+set cmdwinheight=5                  "command window height
+set history=200
+set wildmenu                        "tab button will help to complete command
 
-"缩进设定
-set autoindent						"自动对齐
-set cindent							"自动缩进：C格式
-set cindent shiftwidth=4			"缩进空格数："n>>"|"n<<"n行缩进
+"indent
+set autoindent                      "auto indent
+set cindent                         "c mode indent
+set cindent shiftwidth=4            "indent space number："n>>"|"n<<" will triger n lines indent
 
-"折叠设定
-set foldmethod=syntax				"折叠依据
-set foldlevel=8					"折叠等级
+"fold
+set foldmethod=syntax               "fold by syn
+set foldlevel=8                     "fold level
 
-"匹配设定
-set showmatch						"显示匹配括号
-set mat=2							"match时间
+"show match
+set showmatch                       "show the matched symbols: e.g. ()
+set mat=2                           "match time
 
-"帮助相关
-helptags ~/.vim/doc					"生成帮助相关文件
+"help file
+helptags ~/.vim/doc                 "generate help files
 
-"查找相关
-"set noignorecase					"查找区分case：默认
-set ignorecase						"查找忽略case
-"set ignorecase smartcase			"查找智能忽略case(存在大写时不忽略)
-set hlsearch						"查找高亮：默认
-"set nohlsearch						"查找无高亮
-"set incsearch						"增量式查找
-set noincsearch						"绝对式查找：默认
-"set wrapscan						"查找自动折返：默认
-set nowrapscan						"查找取消折返
+"search relate
+"set noignorecase                   "case sensitive : default
+set ignorecase                      "ignore case
+"set ignorecase smartcase           "smart case sensitive (will not ignore case when there is capital form)
+set hlsearch                        "highlight search
+"set nohlsearch
+"set incsearch                      "increase search
+set noincsearch                     "no increase search
+"set wrapscan                       "auto wrap
+set nowrapscan                      "no auto wrap
 
-"普通快捷建：插入模式左右移动
+"insert mode quickly move
 inoremap<C-L> <Right>
 inoremap<C-H> <Left>
-inoremap <c-e> <del>
+inoremap <C-E> <del>
 "inoremap<C-S> <Down>
 "inoremap<C-W> <Up>
 imap <m-4> <esc>$a
@@ -110,27 +111,27 @@ imap <m-6> <esc>^i
 map j gj
 map k gk
 
-"状态栏设定
-set ruler							"显示光标状态
-set laststatus=2					"显示状态栏
+"status line
+set ruler                           "show the cursor line and row
+set laststatus=2                    "show status line
 set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]%{EchoFuncGetStatusLine()}
-									"设置状态栏文字
+                                    "set the content of status line
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"插件设置
+"plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "ctags & cscope.vim
-set autochdir						"自动跳转至当前目录
-set tags=tags;						"设置ctags对象目录为当前目录
-set tags+=~/.vim/systags			"增加系统tags
+set autochdir                       "change the path to current dir
+set tags=tags;                      "set ctags obj to current dir
+set tags+=~/.vim/systags            "add system tags
 
-if has("cscope")					"逻辑：自动添加cscope.out
-	set csprg=/usr/bin/cscope		"指定cscope命令
-	set cst							"设置:tag行为为:cstag：默认nocst
-	set csto=0						"设置:cstag查找顺序，优先:cscope
-	set nocsverb					"暂时屏蔽无cscope.out错误
+if has("cscope")                    "auto add cscope.out
+	set csprg=/usr/bin/cscope
+	set cst                         "set tag to cstag
+	set csto=0                      "the cscope will show first then cstag
+	set nocsverb                    "ignore missing cscope.out error
 	set cscopequickfix=s-,g-,c-,d-,i-,t-,e-,f-
-									"设置cscope匹配quickfix，'-'表示清空原查找结果
+                                    "cscope will match quickfix, '-' will truncate the previors result
 	let cscope=findfile("cscope.out", ".;")
 	if !empty(cscope) && filereadable(cscope)
 		let cscope_pre=getcwd()
@@ -139,13 +140,13 @@ if has("cscope")					"逻辑：自动添加cscope.out
 	elseif $CSCOPE_DB != ""
 		cs add $CSCOPE_DB
 	endif
-	set csverb						"设置cscope数据库错误提示
+	set csverb                      "set cscope error prompt
 endif
 
 map<expr><C-]> filewritable(bufname("%"))?"<C-]>,cw":"<C-]>"
-									"增加quickfix弹出
+                                    "add quickfix
 
-/* tags in work begin */
+" tags in work begin
 "VARIABLES
 "driver development path
 let envString = system('cat /etc/redhat-release')
@@ -167,9 +168,9 @@ elseif (match(pwdString, 'GenericProber') != -1)
     let pwdString = system('echo -n ${PWD%Generic*}') . "GenericProber"
 endif
 let tcctSourcePath = system('echo -n $WORKSPACE') . '/development/integration/cor/tcapi/'
-/* tags in work end */
+" tags in work end
 
-"ctags usage: ctags -R --c++-kinds=+p --fields=+iaS --extra=+q "c++ tags，参数(1)函数原型，(2)类继承、类访问控制、函数特征，(3)类成员补全
+"ctags usage: ctags -R --c++-kinds=+p --fields=+iaS --extra=+q "c++ tags，params(1)function prototype，(2)class properties，(3)class members
 let cmdline = "-R --c++-kinds=+p --fields=+iaS --extra=+q "
 
 "rm tags
@@ -178,7 +179,7 @@ map<F6> :!rm -rf ./tags
 "current path tags
 map<F7> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .
 
-/* tags in work begin */
+" tags in work begin
 "package tags
 map<F9> :execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q " pwdString
 "driver tags
@@ -187,17 +188,17 @@ map<F10> :execute "!ctags " cmdline driverPath
 "tcct tags
 let tcctPath = tcctSourcePath . "TestCellAPI/Main/ " . tcctSourcePath . "TestCellAccess/Main/ " . driverWSPath . "utility/DriverDevKits/Main " . driverWSPath "integration"
 map<F11> :execute "!ctags " cmdline tcctPath driverPath
-/* tags in work end */
+" tags in work end
 
 "system tags
 map<F12> :!ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ --file-scope=yes --langmap=c:+.h --languages=c,c++ --links=yes --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q  -f ~/.vim/systags /usr/include/* /usr/include/sys/* /usr/include/bits/*  /usr/include/netinet/* /usr/include/arpa/* /usr/include/mysql/* /usr/include/libxml2/*
 
 map<C-F11> :!find . -iname "*.h" -o -iname "*.c" -o -iname "*.cpp" -o -iname "*.hpp" > cscope.files<CR>
 		\:!cscope -Rbkq -i cscope.files -f cscope.out<CR>
-									"R子目录，b无界面，k忽略/usr/include，q辅助索引文件
+									"R recursive，b no gui，k ignore /usr/include，q assistant index
 
 map<expr><C-F10> cscope_connection()?":cs reset<CR>":":cs add cscope.out<CR>"
-									"cscope重载
+									"reload cscope
 
 "taglist.vim
 let Tlist_Show_One_File=1			"设置Tlist对象仅为当前文件
@@ -274,32 +275,33 @@ map<F3>c :Grep <C-R>=printf("-i %s", expand("<cword>"))<cr><cr>
 "a.vim
 
 "nerdcommenter.vim
-"<leader>ci|cs|cc|cu				"单行、多行、部分注释、取消注释
+"<leader>ci|cs|cc|cu				"single line/multi-lines/part/cancel annotation
 
 "vimgdb
-let g:vimgdb_debug_file = ""		"初始化gdbfile
-run macros/gdb_mappings.vim			"加载vimgdb键盘映射
+let g:vimgdb_debug_file = ""		"initiate gdbfile
+run macros/gdb_mappings.vim			"vimgdb mapping
 
 "echofunc
-let g:EchoFuncShowOnStatus = 1		"函数原型显示位置
+let g:EchoFuncShowOnStatus = 1		"function prototype shows on status line
 
 "acp
 let g:acp_behaviorKeywordCommand = "\<C-n>"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"<leader>键盘映射
+"<leader> mapping
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader=","
 
-",ee：编辑vimrc；,ss：重载vimrc；,<space>：make
+",ee：edit vimrc; ,ss：reload vimrc; ,<space>：make
 map<silent><leader>ee :e ~/.vimrc<cr>
 map<silent><leader>ss :source ~/.vimrc<cr>
 map<leader><space> :w<cr>:make<cr>
 
+"ctrl+c/crtl+v
 map<C-V> "+gP
 map<C-C> "+y
 map<C-X> "+x
 
-"快速保存、退出、取消高亮
+"save/quit/cancel highlight
 nmap <silent> <leader>ww :w<cr>
 nmap <silent> <leader>wf :w!<cr>
 nmap <silent> <leader>wa :wa<cr>
@@ -319,33 +321,34 @@ map<silent><leader>bc :CMiniBufExplorer<cr>
 map<silent><leader>fd :Explore<cr>
 
 "cscope
-"查找命令s(C符号)g(本定义)c(调用本函数的函数)t(本字符串)
+"s(symbols)g(defination)c(functions called this this function)t(this string)
 map<silent><leader>ffs :cs find s <C-R>=expand("<cword>")<CR><CR><C-O>,cw
 map<silent><leader>ffg :cs find g <C-R>=expand("<cword>")<CR><CR><C-O>,cw
 map<silent><leader>ffc :cs find c <C-R>=expand("<cword>")<CR><CR><C-O>,cw
 map<silent><leader>fft :cs find t <C-R>=expand("<cword>")<CR><CR><C-O>,cw
-"查找命令e(egrep模式)f(本文件)i(包含本文件的文件)d(本函数调用的函数)
+"e(egrep)f(this file)i(files include this file)d(functions called by this function)
 map<silent><leader>ffe :cs find e <C-R>=expand("<cword>")<CR><CR><C-O>,cw
 map<silent><leader>fff :cs find f <C-R>=expand("<cfile>")<CR><CR><C-O>,cw
 map<silent><leader>ffi :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR><C-O>,cw
 map<silent><leader>ffd :cs find d <C-R>=expand("<cword>")<CR><CR><C-O>,cw
 
 "quickfix
-"跳转next/pre；打开/关闭quickfix窗口
+"next/pre; open/close quickfix
 map<silent><leader>cn :cn<cr>
 map<silent><leader>cp :cp<cr>
 map<silent><leader>cl :ccl<cr>
 map<silent><leader>cw :cw 10<cr>
 
 "a.vim
-"声明、定义文件切换；跳转文件
+"aa to switch .hpp and .cpp
+"ii will try to switch the file by given path
 map<silent><leader>aa :A<cr>
 map<silent><leader>ii :IH<cr>
 
 "gdb.vim
 map<silent><leader>gv :bel 20vsplit gdb-variables<cr>
 
-"自动补全符号
+"auto complete symbols
 inoremap [] []<Esc>i
 inoremap ** /*  */<Esc><left><left>i
 inoremap () ()<Esc>i
@@ -366,7 +369,7 @@ function! QuoteDelim(char)
 	endif
 endf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"自动命令
+"auto command
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"自动重载.vimrc
+"auto reload .vimrc
 autocmd! bufwritepost .vimrc source ~/.vimrc
