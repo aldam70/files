@@ -1,3 +1,29 @@
+"vundle control
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'vim-scripts/a.vim'
+Plugin 'vim-scripts/minibufexpl.vim'
+Plugin 'vim-scripts/taglist.vim'
+Plugin 'vim-scripts/AutoComplPop'
+Plugin 'vim-scripts/bufexplorer.zip'
+Plugin 'vim-scripts/winmanager'
+Plugin 'vim-scripts/Mark'
+Plugin 'vim-scripts/desertEx'
+Plugin 'vim-scripts/molokai'
+Plugin 'vim-scripts/ShowMarks'
+Plugin 'vim-scripts/c.vim'
+Plugin 'vim-scripts/cpp.vim'
+Plugin 'vim-scripts/OmniCppComplete'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'yegappan/grep'
+Plugin 'mbbill/echofunc'
+"Plugin 'mbbill/code_complete'
+call vundle#end()
+filetype plugin indent on
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "基础设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -6,7 +32,7 @@ set encoding=utf-8					"设置编码格式
 "set langmenu=zh_CN.UTF-8			"菜单语言
 "language messages zh_CN.UTF-8		"菜单语言
 "source $VIMRUNTIME/delmenu.vim		"删除菜单
-"source $VIMRUNTIME/menu.vim			"导入菜单
+"source $VIMRUNTIME/menu.vim	    "导入菜单
 if has("multi_byte")				"设置fileencodings
 	set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,sjis,euc-kr,ucs-2le,latin1
 endif
@@ -119,6 +145,7 @@ endif
 map<expr><C-]> filewritable(bufname("%"))?"<C-]>,cw":"<C-]>"
 									"增加quickfix弹出
 
+/* tags in work begin */
 "VARIABLES
 "driver development path
 let envString = system('cat /etc/redhat-release')
@@ -132,7 +159,6 @@ else
     let handlerSourcePath = '/opt/93000/src/tci/handler/'
     let proberSourcePath = '/opt/93000/src/tci/prober/'
 endif
-
 "driver package path
 let pwdString = system('echo -n $PWD')
 if (match(pwdString, 'GenericHandler') != -1)
@@ -140,8 +166,8 @@ if (match(pwdString, 'GenericHandler') != -1)
 elseif (match(pwdString, 'GenericProber') != -1)
     let pwdString = system('echo -n ${PWD%Generic*}') . "GenericProber"
 endif
-
 let tcctSourcePath = system('echo -n $WORKSPACE') . '/development/integration/cor/tcapi/'
+/* tags in work end */
 
 "ctags usage: ctags -R --c++-kinds=+p --fields=+iaS --extra=+q "c++ tags，参数(1)函数原型，(2)类继承、类访问控制、函数特征，(3)类成员补全
 let cmdline = "-R --c++-kinds=+p --fields=+iaS --extra=+q "
@@ -152,16 +178,16 @@ map<F6> :!rm -rf ./tags
 "current path tags
 map<F7> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .
 
+/* tags in work begin */
 "package tags
 map<F9> :execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q " pwdString
-
 "driver tags
 let driverPath = driverSourcePath . "common/mhcom/src/ " . driverSourcePath . "common/tcom/src/ " . driverSourcePath . "common/tools/src " . driverSourcePath . "common/log/src " . driverSourcePath . "common/guiServer/src/ " . driverSourcePath . "common/guiServer/gui/ " . handlerSourcePath . "frame/src/ " . handlerSourcePath . "include/ " . handlerSourcePath . "state/src/ " . proberSourcePath . "frame/src/ " . proberSourcePath . "include/ " . proberSourcePath . "state/src/ " . "."
 map<F10> :execute "!ctags " cmdline driverPath
-
 "tcct tags
 let tcctPath = tcctSourcePath . "TestCellAPI/Main/ " . tcctSourcePath . "TestCellAccess/Main/ " . driverWSPath . "utility/DriverDevKits/Main " . driverWSPath "integration"
 map<F11> :execute "!ctags " cmdline tcctPath driverPath
+/* tags in work end */
 
 "system tags
 map<F12> :!ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ --file-scope=yes --langmap=c:+.h --languages=c,c++ --links=yes --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q  -f ~/.vim/systags /usr/include/* /usr/include/sys/* /usr/include/bits/*  /usr/include/netinet/* /usr/include/arpa/* /usr/include/mysql/* /usr/include/libxml2/*
@@ -247,7 +273,7 @@ map<F3>c :Grep <C-R>=printf("-i %s", expand("<cword>"))<cr><cr>
 
 "a.vim
 
-"NERD_commenter.vim
+"nerdcommenter.vim
 "<leader>ci|cs|cc|cu				"单行、多行、部分注释、取消注释
 
 "vimgdb
