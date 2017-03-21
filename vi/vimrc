@@ -4,24 +4,33 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+
+"formal plugin
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-scripts/a.vim'
 Plugin 'vim-scripts/minibufexpl.vim'
 Plugin 'vim-scripts/taglist.vim'
 Plugin 'vim-scripts/bufexplorer.zip'
 Plugin 'vim-scripts/winmanager'
-Plugin 'vim-scripts/Mark'
+Plugin 'vim-scripts/ShowMarks'
+Plugin 'vim-scripts/OmniCppComplete'
+Plugin 'mbbill/echofunc'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'yegappan/grep'
+
+"scheme plugin
 Plugin 'vim-scripts/desertEx'
 Plugin 'vim-scripts/molokai'
-Plugin 'vim-scripts/ShowMarks'
+Plugin 'vim-scripts/phd'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'chriskempson/base16-vim'
+
+"personalize plugin
 Plugin 'aldam70/vim_code_complete'
 Plugin 'aldam70/vim_AutoComplPop'
-"Plugin 'vim-scripts/c.vim'
-Plugin 'vim-scripts/cpp.vim'
-Plugin 'vim-scripts/OmniCppComplete'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'yegappan/grep'
-Plugin 'mbbill/echofunc'
+
 call vundle#end()
 filetype plugin indent on
 
@@ -43,12 +52,24 @@ set gfn=Bitstream\ Vera\ Sans\ Mono\ 10,Luxi\ Mono\ 10,
                                     "font
 
 "perspective
+syn enable
 syn on
+"set background=dark
+"set background=light
+
+"colorscheme solarized
+"colorscheme base16-default-dark
+"colorscheme base16-solarized-light
+colorscheme base16-solarized-dark
+"colorscheme phd
 "colorscheme desertEx
-colorscheme molokai
+"colorscheme molokai
+
 set columns=188
 set lines=68
 set nu
+set relativenumber
+set textwidth=0                     "disable the auto step to line
 set mousemodel=popup                "right-click will pop up menu
 set gcr=a:blinkon0                  "disable cursor blink
 set previewheight=10                "preview window height
@@ -57,7 +78,8 @@ set previewheight=10                "preview window height
 "keyboard
 set tabstop=4                       "tab width
 set expandtab                       "use space to replace tab
-set scrolloff=5                     "margin rows when the cursor reach top or bottom
+set softtabstop=4                   "treat multple spaces as a tab when delete
+set scrolloff=8                     "margin rows when the cursor reach top or bottom
 set backspace=2                     "enable backspace
 set whichwrap=b,s,<,>,[,]           "will skip to next row when the cursor reach the end of the row
 
@@ -77,15 +99,24 @@ set autoindent                      "auto indent
 set cindent                         "c mode indent
 set cindent shiftwidth=4            "indent space number："n>>"|"n<<" will triger n lines indent
 
-"fold
+"fold : use za to open/close current fold; use zM to close all fold; use zR to open all fold
+"set nofoldenable                    "no fold
+"set foldmethod=indent               "fold by indent
 set foldmethod=syntax               "fold by syn
-set foldlevel=8                     "fold level
+set foldlevel=2                     "fold level
 
 "show match
 set showmatch                       "show the matched symbols: e.g. ()
 set mat=2                           "match time
-set mps+=<:>                        "match patterns
-set mps-=[:]
+set mps-=[:]                        "match patterns
+
+"hide gui bar and gui menu
+set guioptions-=l
+set guioptions-=L
+set guioptions-=r
+set guioptions-=R
+set guioptions-=m
+set guioptions-=T
 
 "help file
 "helptags ~/.vim/doc                "generate help files
@@ -110,8 +141,8 @@ inoremap<C-E> <del>
 imap <m-4> <esc>$a
 imap <m-0> <esc>0i
 imap <m-6> <esc>^i
-map j gj
-map k gk
+map <silent> <expr> j (v:count == 0 ? 'gj' :'j')
+map <silent> <expr> k (v:count == 0 ? 'gk' :'k')
 
 "status line
 set ruler                           "show the cursor line and row
@@ -125,6 +156,7 @@ set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]%{EchoFuncGetStatusLine
 "ctags & cscope.vim
 set autochdir                       "change the path to current dir
 set tags=tags;                      "set ctags obj to current dir
+set tags+=~/.vim/systags_cpp        "add system tags
 set tags+=~/.vim/systags            "add system tags
 
 if has("cscope")                    "auto add cscope.out
@@ -201,7 +233,9 @@ endif
 " tags in work end
 
 "system tags
-map<F12> :!ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ --file-scope=yes --langmap=c:+.h --languages=c,c++ --links=yes --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q  -f ~/.vim/systags /usr/include/* /usr/include/sys/* /usr/include/bits/*  /usr/include/netinet/* /usr/include/arpa/* /usr/include/mysql/* /usr/include/libxml2/*
+"map<F12> :!ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ --file-scope=yes --langmap=c:+.h --languages=c,c++ --links=yes --c-kinds=+p --c++-kinds=+l+x+p --fields=+iaSl --extra=+q -f ~/.vim/systags /usr/include/* /usr/include/sys/* /usr/include/bits/*  /usr/include/netinet/* /usr/include/arpa/* /usr/include/libxml2/libxml/* /usr/include/c++/4.8.2/bits/*
+map<F12> :!ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ -I _GLIBCXX_NOEXCEPT -I _M_dataplus --links=no --language-force=c++ --c++-kinds=+l+x+p --fields=+iaSl --extra=+q -R -f ~/.vim/systags_cpp /usr/include/c++;
+            \ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ -I _GLIBCXX_NOEXCEPT -I _M_dataplus --language-force=c --c-kinds=+l+x+p+f --fields=+iaSl --extra=+q -f ~/.vim/systags /usr/include/* /usr/include/sys/* /usr/include/bits/*  /usr/include/netinet/* /usr/include/arpa/* /usr/include/libxml2/libxml/*
 
 map<C-F11> :!find . -iname "*.h" -o -iname "*.c" -o -iname "*.cpp" -o -iname "*.hpp" > cscope.files<CR>
             \:!cscope -Rbkq -i cscope.files -f cscope.out<CR>
@@ -213,7 +247,7 @@ map<expr><C-F10> cscope_connection()?":cs reset<CR>":":cs add cscope.out<CR>"
 "taglist.vim
 let Tlist_Show_One_File=1               "set tlist obj to current file
 let Tlist_Exit_OnlyWindow=1             "when the tlist is the only window, close it
-let Tlist_Show_Menu=1                   "show menu
+let Tlist_Show_Menu=0                   "dont show the iterm in menu
 set updatetime=1500                     "flash timing
 
 "BufExplorer.vim
@@ -249,6 +283,7 @@ set completeopt=longest,menu            "disable previous window
 set wildignore=*.o,*.obj,*~,*.pyc       "ignore files
 let OmniCpp_SelectFirstItem=0           "auto select first line
 let OmniCpp_ShowPrototypeInAbbr=1       "prototype of function
+let OmniCpp_DefaultNamespaces=["_GLIBCXX_STD"]
 "insert mapping：<cr> to chose; <c-j> page down; <c-k> page up
 inoremap<expr><cr>	pumvisible()?"\<c-y>":"\<cr>"
 inoremap<expr><c-j>	pumvisible()?"\<PageDown>\<c-n>\<c-p>":"\<c-x><c-o>"
@@ -266,6 +301,10 @@ let Grep_Default_Filelist='*.c *.cpp *.h'
 map<F3>n :Grep<cr>
 map<F3>a :Grep <C-R>=printf("\\<%s\\>", expand("<cword>"))<cr><cr>
 map<F3>c :Grep <C-R>=printf("-i %s", expand("<cword>"))<cr><cr>
+
+"vim-cpp-enhanced-highlight
+let g:cpp_class_scope_highlight = 1
+"let g:cpp_member_variable_highlight = 1
 
 "code_complete.vim
 "cc<tab>=/**/
@@ -344,6 +383,11 @@ map<silent><leader>cn :cn<cr>
 map<silent><leader>cp :cp<cr>
 map<silent><leader>cl :ccl<cr>
 map<silent><leader>cw :cw 10<cr>
+
+"save the content to specific register
+map<silent><leader>y "ay
+map<silent><leader>d "ad
+map<silent><leader>p "ap
 
 "a.vim
 "aa to switch .hpp and .cpp
