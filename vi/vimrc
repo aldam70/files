@@ -14,6 +14,7 @@ Plugin 'vim-scripts/bufexplorer.zip'
 Plugin 'vim-scripts/winmanager'
 Plugin 'vim-scripts/ShowMarks'
 Plugin 'vim-scripts/OmniCppComplete'
+Plugin 'vim-syntastic/syntastic'
 Plugin 'mbbill/echofunc'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'octol/vim-cpp-enhanced-highlight'
@@ -262,6 +263,17 @@ let g:miniBufExplorerMoreThanOne=1      "minibuf will still enable when there is
 let g:miniBufExplForceSyntaxEnable=0    "prevent the highlight missing
 let g:miniBufExplModSelTarget=1         "prevent buff window to occupy the minibuf
 let g:miniBufExplMapCTabSwitchBufs=1    "set <C-Tab> enable
+
+"syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_check_on_open=1                 "save will trigger error check
+let g:syntastic_always_populate_loc_list=1      "reduce the clash with other plugins
+let g:syntastic_auto_loc_list=1                 "open automatically when there is error, close the window when there is no error
+let g:syntastic_check_on_wq=0                   "save and quit will not trigger the error check
+let g:syntastic_loc_list_height=5               "the height of the error window
+let g:syntastic_cpp_compiler_options='-std=c++11' "compiler set-up
 
 "winmanager.vim
 "width,quit when only 1 window left, layout
