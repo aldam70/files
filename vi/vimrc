@@ -307,13 +307,11 @@ let g:cpp_class_scope_highlight = 1
 "let g:cpp_member_variable_highlight = 1
 
 "code_complete.vim
-"cc<tab>=/**/
-"ff<tab>=#ifdef...
-"de<tab>=#define
-"is<tab>=#include<>
-"in<tab>=#include""
-"ife<tab>=if...else...
-"main<tab>=int main
+"cc/cfun/ccla
+"de/in/is/ff
+"wi/for/if/ife
+"main/sw
+"cl/su
 
 "quickfix.vim
 
@@ -400,9 +398,7 @@ map<silent><leader>gv :bel 20vsplit gdb-variables<cr>
 
 "auto complete symbols
 inoremap [] []<Esc>i
-inoremap ** /*  */<Esc><left><left>i
 inoremap () ()<Esc>i
-inoremap {} {<CR>}<Esc>O
 inoremap <> <><Esc>i
 inoremap "" <c-r>=QuoteDelim('"')<CR>
 inoremap '' <c-r>=QuoteDelim("'")<CR>
