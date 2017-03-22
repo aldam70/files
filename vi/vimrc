@@ -8,18 +8,19 @@ call vundle#begin()
 "formal plugin
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-scripts/a.vim'
-Plugin 'vim-scripts/minibufexpl.vim'
 Plugin 'vim-scripts/taglist.vim'
 Plugin 'vim-scripts/bufexplorer.zip'
 Plugin 'vim-scripts/winmanager'
 Plugin 'vim-scripts/ShowMarks'
 Plugin 'vim-scripts/OmniCppComplete'
 Plugin 'vim-syntastic/syntastic'
-Plugin 'mbbill/echofunc'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'yegappan/grep'
+if v:version > 703
+    Plugin 'mbbill/echofunc'
+endif
 
 "scheme plugin
 Plugin 'vim-scripts/desertEx'
@@ -29,6 +30,7 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/base16-vim'
 
 "personalize plugin
+Plugin 'aldam70/vim_minibufexpl'
 Plugin 'aldam70/vim_code_complete'
 Plugin 'aldam70/vim_AutoComplPop'
 
@@ -69,7 +71,9 @@ colorscheme base16-solarized-dark
 set columns=188
 set lines=68
 set nu
-set relativenumber
+if v:version > 703
+    set relativenumber
+endif
 set textwidth=0                     "disable the auto step to line
 set mousemodel=popup                "right-click will pop up menu
 set gcr=a:blinkon0                  "disable cursor blink
@@ -145,11 +149,20 @@ imap <m-6> <esc>^i
 map <silent> <expr> j (v:count == 0 ? 'gj' :'j')
 map <silent> <expr> k (v:count == 0 ? 'gk' :'k')
 
+"ctrl+c/crtl+v
+map<C-V> "+gP
+map<C-C> "+y
+map<C-X> "+x
+
 "status line
 set ruler                           "show the cursor line and row
 set laststatus=2                    "show status line
-set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]%{EchoFuncGetStatusLine()}
+if v:version > 703
+    set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]%{EchoFuncGetStatusLine()}
                                     "set the content of status line
+else
+    set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c]
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "plugin
@@ -234,7 +247,6 @@ endif
 " tags in work end
 
 "system tags
-"map<F12> :!ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ --file-scope=yes --langmap=c:+.h --languages=c,c++ --links=yes --c-kinds=+p --c++-kinds=+l+x+p --fields=+iaSl --extra=+q -f ~/.vim/systags /usr/include/* /usr/include/sys/* /usr/include/bits/*  /usr/include/netinet/* /usr/include/arpa/* /usr/include/libxml2/libxml/* /usr/include/c++/4.8.2/bits/*
 map<F12> :!ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ -I _GLIBCXX_NOEXCEPT -I _M_dataplus --links=no --language-force=c++ --c++-kinds=+l+x+p --fields=+iaSl --extra=+q -R -f ~/.vim/systags_cpp /usr/include/c++;
             \ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ -I _GLIBCXX_NOEXCEPT -I _M_dataplus --language-force=c --c-kinds=+l+x+p+f --fields=+iaSl --extra=+q -f ~/.vim/systags /usr/include/* /usr/include/sys/* /usr/include/bits/*  /usr/include/netinet/* /usr/include/arpa/* /usr/include/libxml2/libxml/*
 
@@ -320,10 +332,6 @@ map<F3>n :Grep<cr>
 map<F3>a :Grep <C-R>=printf("\\<%s\\>", expand("<cword>"))<cr><cr>
 map<F3>c :Grep <C-R>=printf("-i %s", expand("<cword>"))<cr><cr>
 
-"vim-cpp-enhanced-highlight
-let g:cpp_class_scope_highlight = 1
-"let g:cpp_member_variable_highlight = 1
-
 "code_complete.vim
 "cc/cfun/ccla
 "de/in/is/ff
@@ -331,9 +339,21 @@ let g:cpp_class_scope_highlight = 1
 "main/sw
 "cl/su
 
-"quickfix.vim
+"copy to a register
+"<leader>y/d/p
+
+"fold
+"zM/zR/za/zA
+
+"easymotion
+"<leader><leader> b/w
+
+"vim-cpp-enhanced-highlight
+let g:cpp_class_scope_highlight = 1
+"let g:cpp_member_variable_highlight = 1
 
 "a.vim
+"<leader>aa/ii
 
 "nerdcommenter.vim
 "<leader>ci|cs|cc|cu                "single line/multi-lines/part/cancel annotation
@@ -347,6 +367,7 @@ let g:EchoFuncShowOnStatus = 1      "function prototype shows on status line
 
 "acp
 let g:acp_behaviorKeywordCommand = "\<C-n>"
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "<leader> mapping
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -356,11 +377,6 @@ let mapleader=","
 map<silent><leader>ee :e ~/.vimrc<cr>
 map<silent><leader>ss :source ~/.vimrc<cr>
 map<leader><space> :w<cr>:make<cr>
-
-"ctrl+c/crtl+v
-map<C-V> "+gP
-map<C-C> "+y
-map<C-X> "+x
 
 "save/quit/cancel highlight
 nmap <silent> <leader>ww :w<cr>
@@ -406,8 +422,6 @@ map<silent><leader>d "ad
 map<silent><leader>p "ap
 
 "a.vim
-"aa to switch .hpp and .cpp
-"ii will try to switch the file by given path
 map<silent><leader>aa :A<cr>
 map<silent><leader>ii :IH<cr>
 
