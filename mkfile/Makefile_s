@@ -1,4 +1,4 @@
-CPP = /usr/bin/g++ -m64 -g
+CPP = /usr/bin/g++ -m64 -g -std=c++11
 LD = /usr/bin/g++ -m64 -g
 
 TCCT_PATH = /workspaces/atslxws155/adahuang/ws-tcct-r2-dev-adahuang/workspace/
@@ -13,11 +13,15 @@ LDFLAGS = $(LIB_PATHS) -ltest_cell_api
 
 
 SRCS = $(shell ls *.cpp)
+# pattern substitution, transform all the cpp files to obj files as the object to make
 OBJS = $(SRCS:.cpp=.o)
 
 all: client 
-clean: ; @rm -f $(OBJS); rm -f core*; rm -f client 
 client: $(OBJS)
 	${LD} $(OBJS) $(LDFLAGS) -o $@
 .cpp.o:
 	${CPP} $(CPPFLAGS)  -c $<
+
+# @ to be silent -rm to ignore error
+clean: 
+	@rm -f $(OBJS); rm -f core*; rm -f client 

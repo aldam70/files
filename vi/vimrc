@@ -1,6 +1,6 @@
 "git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 "vundle control
-set nocompatible
+set nocompatible    "dont compatible with vi
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
