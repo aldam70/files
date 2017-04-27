@@ -198,7 +198,7 @@ map<expr><C-]> filewritable(bufname("%"))?"<C-]>,cw":"<C-]>"
                                     "add quickfix
 
 " tags in work begin
-if exists('/etc/redhat-release')
+if filereadable('/etc/redhat-release')
     let envString = system('cat /etc/redhat-release')
 else
     let envString = ""
