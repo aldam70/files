@@ -212,6 +212,7 @@ if envString != ""
         let handlerSourcePath = system('echo -n $WORKSPACE') . '/ph-development/development/drivers/Generic_93K_Driver/GenericHandler/'
         let proberSourcePath = system('echo -n $WORKSPACE') . '/ph-development/development/drivers/Generic_93K_Driver/GenericProber/'
     else
+        let driverWSPath = ''
         let driverSourcePath = '/opt/93000/src/tci/'
         let handlerSourcePath = '/opt/93000/src/tci/handler/'
         let proberSourcePath = '/opt/93000/src/tci/prober/'
