@@ -17,18 +17,20 @@ fi
 # -- set alias
 # ---------------------------------------
 
-#alias ..='cd ..'
+alias ..='cd ..'
 alias h='history'
 alias j='jobs -l'
 alias rm='rm -i'
-alias cdws='cd /workspaces/atslxws155/adahuang/'
-alias cdsm='cd /workspaces/atslxws155/adahuang/ws-bf-adahuang/vobs/zenith/workspace/'
-alias cdtcct='cd /workspaces/atslxws155/adahuang/ws-tcct-r2-dev-adahuang/workspace/'
-alias cdapi='cd /workspaces/atslxws155/adahuang/ws-tcct-r2-dev-adahuang/workspace/development/integration/cor/tcapi/TestCellAccess/Main/'
-alias cdcordl='cd /workspaces/atslxws155/adahuang/ws-bf-adahuang/vobs/zenith/workspace/integration/cor/DatalogFormatter/Main/'
-alias cdextdl='cd /workspaces/atslxws155/adahuang/ws-bf-adahuang/vobs/zenith/workspace/integration/ext/DatalogFormatter/Main/'
+alias cdws='cd /workspaces/'$HOSTNAME'/adahuang/'
+alias cdsm='cd /workspaces/'$HOSTNAME'/adahuang/ws-bf-adahuang/vobs/zenith/workspace/'
+alias cdtcct='cd /workspaces/'$HOSTNAME'/adahuang/ws-tcct-r2-dev-adahuang/workspace/'
+alias cdtcapi='cd /workspaces/'$HOSTNAME'/adahuang/ws-tcct-r2-dev-adahuang/workspace/development/integration/cor/tcapi/TestCellAccess/Main/'
+alias cddlcor='cd /workspaces/'$HOSTNAME'/adahuang/ws-bf-adahuang/vobs/zenith/workspace/integration/cor/DatalogFormatter/Main/'
+alias cddlext='cd /workspaces/'$HOSTNAME'/adahuang/ws-bf-adahuang/vobs/zenith/workspace/integration/ext/DatalogFormatter/Main/'
+alias cdhvmapi='cd /workspaces/'$HOSTNAME'/adahuang/ws-bf-adahuang/vobs/zenith/workspace/integration/ext/hvmapi/HvmTestControl/Main/'
 
 alias cp='cp -i'
+alias cpcfg=/home/adahuang/.cp.sh
 alias mv='mv -i'
 alias ls='ls -F --color=tty'
 alias la='ls -A --color=tty'
@@ -36,11 +38,15 @@ alias lt='ls -lhtrF --color=tty'
 alias ll='ls -lh --color=tty'
 
 osinfo=$(cat /etc/redhat-release)
-if [ "$osinfo" = "Red Hat Enterprise Linux Workstation release 7.2 (Maipo)" ];
+if [ "$osinfo" = "Red Hat Enterprise Linux Workstation release 7.4 (Maipo)" ];
 then
 alias vi='/usr/bin/gvim'
-alias cdh='cd /workspaces/atslxws155/adahuang/ws-tcct-r2-dev-adahuang/workspace/ph-development/development/drivers/Generic_93K_Driver/GenericHandler/'
-alias cdp='cd /workspaces/atslxws155/adahuang/ws-tcct-r2-dev-adahuang/workspace/ph-development/development/drivers/Generic_93K_Driver/GenericProber/'
+alias cdh='cd /workspaces/'$HOSTNAME'/adahuang/ws-tcct-r2-dev-adahuang/workspace/ph-development/development/drivers/Generic_93K_Driver/GenericHandler/'
+alias cdp='cd /workspaces/'$HOSTNAME'/adahuang/ws-tcct-r2-dev-adahuang/workspace/ph-development/development/drivers/Generic_93K_Driver/GenericProber/'
+alias cdphint='cd /workspaces/'$HOSTNAME'/adahuang/ws-tcct-r2-dev-adahuang/workspace/ph-development/development/integration/'
+alias cdphacc='cd /workspaces/'$HOSTNAME'/adahuang/ws-tcct-r2-dev-adahuang/workspace/ph-development/development/pha/'
+alias cdrecipe='cd /workspaces/'$HOSTNAME'/adahuang/ws-tcct-r2-dev-adahuang/workspace/development/integration/cor/tcapi/RecipeManager/'
+alias cdinclude='cd /workspaces/'$HOSTNAME'/adahuang/ws-tcct-r2-dev-adahuang/workspace/template_system/include/xoc/tcapi/'
 else
 alias vi='~/bin/gvim'
 alias cdh='cd /opt/93000/src/tci/handler'
@@ -54,7 +60,7 @@ alias ckon='~/bin/ckonsole.sh'
 alias dict='stardict &'
 alias which='type -all'
 alias tsclient='tsclient >/dev/null 2>&1 &'
-alias rdesktop_windows='rdesktop -u ADV\\adam.huang -g 1280x1024 -a 16 -r clipboard:PRIMARYCLIPBOARD -r sound:remote 10.150.51.65 >/dev/null 2>&1 &'
+alias rdesktop_windows='rdesktop -u ADV\\adam.huang -g 1280x1024 -a 16 -r clipboard:PRIMARYCLIPBOARD -r sound:remote 10.150.88.58 >/dev/null 2>&1 &'
 alias eclipse='/opt/ate/devtools/bin/eclipse &'
 alias lcdisplay='x0vncserver PasswordFile=/home/adahuang/.vnc/passwd &'
 alias vncviewer='vncviewer &'
@@ -79,10 +85,10 @@ alias ccqcheck="/opt/ate/devtools/bin/doLocalCoverityAnalysis.sh"
 
 #set env
 alias setenv="/vobs/zenith/workspace/CMF-tools/set_environment.ksh"
-alias settcct="/workspaces/atslxws155/adahuang/ws-tcct-r2-dev-adahuang/workspace/bin/set_environment"
-alias setsmt="/workspaces/atslxws155/adahuang/ws-bf-adahuang/vobs/zenith/workspace/CMF-tools/set_environment.ksh"
-alias settcapirun="/workspaces/atslxws155/adahuang/ws-tcct-r2-dev-adahuang/workspace/system/bin/run"
-alias setphrun="/workspaces/atslxws155/adahuang/ws-tcct-r2-dev-adahuang/workspace/ph-development/system/bin/run"
+alias settcct="/workspaces/'$HOSTNAME'/adahuang/ws-tcct-r2-dev-adahuang/workspace/bin/set_environment"
+alias setsmt="/workspaces/'$HOSTNAME'/adahuang/ws-bf-adahuang/vobs/zenith/workspace/CMF-tools/set_environment.ksh"
+alias settcapirun="/workspaces/'$HOSTNAME'/adahuang/ws-tcct-r2-dev-adahuang/workspace/system/bin/run"
+alias setphrun="/workspaces/'$HOSTNAME'/adahuang/ws-tcct-r2-dev-adahuang/workspace/ph-development/system/bin/run"
 
 alias phmake=`echo $WORKSPACE`"/ph-development/bin/run_rd"
 alias zbph=`echo $WORKSPACE`"/bin/zbph"
@@ -104,13 +110,13 @@ alias tkph='/opt/hp93000/testcell/bin/killPH'
 alias rmlg="rm -rf `echo $WORKSPACE`/system/log/*"
 alias rmphlg="rm -rf `echo $WORKSPACE`/ph-development/system/log/*"
 
-alias sw='/opt/hp93000/soc_common/bin/switch_version'
+alias swver='/opt/hp93000/soc_common/bin/switch_version'
 #alias tcct='/opt/hp93000/tcct/bin/tcct'
 #alias killtcct='/opt/hp93000/tcct/bin/killTcct'
 alias DRLDump='/opt/hp93000/soc/.service/bin/DRLDump -system -print -line'
 #export HP83000_ROOT=/opt/hp93000/soc
 export PATH=$PATH:/opt/ibm/RationalSDLC/clearcase/linux_x86/bin/
-
+#export NONSHIPMENT_ROOT=/workspaces/atslxvm5171/adahuang/ws-r7.4-bf-adahuang/opt/93000/src
 # ---------------------------------------
 # -- history ignore
 # ---------------------------------------
@@ -162,6 +168,23 @@ esac
 # ---------------------------------------
 # -- set PROMPT
 # ---------------------------------------
+
+function add_git_branch_to_prompt {
+   local c_red='\e[31m'
+   local c_green='\e[0;32m'
+   local c_blue='\e[0;34m'
+   local c_clear='\e[0m'
+   branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+   repo=$(git rev-parse --show-toplevel 2>/dev/null)
+
+   if [[ -n "${ENV_SCM_WORKSPACE_ROOT}" && -n "$branch" ]] ; then
+     echo -e "${c_red}ENV Prepared for: ${c_green}${ENV_SCM_WORKSPACE_ROOT} ${c_clear} Branch for current repo: ${c_green}${branch}${c_clear}"
+   elif [[ -n "${ENV_SCM_WORKSPACE_ROOT}" ]] ; then
+     echo -e "${c_red}ENV Prepared for: ${c_green}${ENV_SCM_WORKSPACE_ROOT} ${c_clear}"
+   fi
+}
+
+PROMPT_COMMAND="add_git_branch_to_prompt"
 
 #set normal prompt
 PS1="\[${RED}\]`hostname`: \[${BLUE}\]\${PWD}\\[${NORMAL}\]\n\[${YELLOW}\]\\u:\[${NORMAL}\]$ "
@@ -265,12 +288,17 @@ function up() {
 function psgrep() {
 	if [ ! -z $1 ];then
 	echo "grepping for processes matching $1..."
-	ps aux | grep $1 | grep -v grep
+	ps aux | grep -i $1 | grep -v grep
 	else
 	echo "!! need name to grep for"
 	fi
 }
 
+function pscpu() {
+    ps -eo pid,ppid,cmd,%cpu,%mem --sort=-%cpu | head
+}
 #notes for reference
 #sed -i "N;N;s/\n\nOLDSTRING/NEWSTRING/g" `grep "OLDSTRING" -rl .`
 #socle113.bbn.verigy.net:1 12345678
+#sudo mount -o username=adam.huang,uid=1709 //10.150.10.111/Tuatek\ PC\ Backup/AdamHuang/vfsshared /home/adahuang/mnt/windows/
+#ps -eo pid,ppid,cmd,%cpu,%mem --sort=-%cpu | head
