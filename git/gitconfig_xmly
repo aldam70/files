@@ -1,0 +1,27 @@
+[color]
+	ui = auto
+[alias]
+#personalization
+    st = status
+    co = checkout
+    ci = commit
+    br = branch
+    ;lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+    lg = "log --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --stat -n"
+    df = diff
+    gdf = difftool -y
+[diff]
+    tool = opendiff
+[merge]
+    tool = kdiff3
+[user]
+	name = yunfeng.huang
+	email = yunfeng.huang@ximalaya.com
+[core]
+	excludesfile = /Users/adam.huang/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

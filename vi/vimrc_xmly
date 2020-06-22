@@ -1,0 +1,626 @@
+"git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+"vundle control
+set nocompatible    "dont compatible with vi
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+"formal plugin
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'vim-scripts/a.vim'
+"Plugin 'vim-scripts/taglist.vim'
+Plugin 'vim-scripts/bufexplorer.zip'
+"Plugin 'vim-scripts/winmanager'
+Plugin 'vim-scripts/ShowMarks'
+"Plugin 'vim-scripts/OmniCppComplete'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tacahiroy/ctrlp-funky'
+Plugin 'majutsushi/tagbar'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+"Plugin 'Valloric/YouCompleteMe'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'mileszs/ack.vim'
+
+"Plugin 'yegappan/grep'
+Plugin 'vim-syntastic/syntastic'
+if v:version > 703
+    Plugin 'mbbill/echofunc'
+endif
+
+"scheme plugin
+Plugin 'vim-scripts/desertEx'
+Plugin 'vim-scripts/molokai'
+Plugin 'vim-scripts/phd'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'chriskempson/base16-vim'
+
+"personalize plugin
+"Plugin 'aldam70/vim_minibufexpl'
+"Plugin 'aldam70/vim_code_complete'
+"Plugin 'aldam70/vim_AutoComplPop'
+
+call vundle#end()
+filetype plugin indent on
+
+"mute ycm complain which is about deprecated imp function
+if has('python3')
+  silent! python3 1
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"basic
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"encoding
+set encoding=utf-8
+if has("multi_byte")                "file encodings
+    set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,sjis,euc-kr,ucs-2le,latin1
+endif
+
+"perspective
+syn enable
+syn on
+"set background=dark
+"set background=light
+
+"colorscheme solarized
+"colorscheme base16-default-dark
+"if v:version > 703
+    "colorscheme base16-solarized-dark
+"else
+    "colorscheme base16-solarized-light
+"endif
+"colorscheme phd
+"colorscheme desertEx
+colorscheme molokai
+
+set columns=188
+set lines=68
+set nu
+if v:version > 703
+    set relativenumber
+endif
+set textwidth=0                     "disable the auto step to line
+set mouse=a                         "enable scroll
+set mousemodel=popup                "right-click will pop up menu
+set gcr=a:blinkon0                  "disable cursor blink
+set previewheight=10                "preview window height
+set cursorline                      "highlight the cursor line
+set cursorcolumn                    "highlight the cursor line
+
+" Change cursor shape between insert and normal mode in iTerm2.app
+if $TERM_PROGRAM =~ "iTerm"
+let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+let &t_SR = "\<Esc>]50;CursorShape=2\x7" " Block in normal mode
+endif
+
+"keyboard
+set tabstop=4                       "tab width
+set expandtab                       "use space to replace tab
+set softtabstop=4                   "treat multple spaces as a tab when delete
+set scrolloff=8                     "margin rows when the cursor reach top or bottom
+set backspace=2                     "enable backspace
+set whichwrap=b,s,<,>,[,]           "will skip to next row when the cursor reach the end of the row
+
+"file relate
+set autoread                        "auto read when the file changed outside
+set hidden                          "will approve to change the buffer when the file has not been saved
+filetype plugin on                  "file type check
+
+"command line
+"set showcmd
+set cmdheight=2
+set cmdwinheight=5                  "command window height
+set history=200
+set wildmenu                        "tab button will help to complete command
+
+"indent
+set autoindent                      "auto indent
+set cindent                         "c mode indent
+set cindent shiftwidth=4            "indent space number："n>>"|"n<<" will triger n lines indent
+
+"fold : use za to open/close current fold; use zM to close all fold; use zR to open all fold
+"set nofoldenable                    "no fold
+"set foldmethod=indent               "fold by indent
+set foldmethod=syntax               "fold by syn
+set foldlevel=2                     "fold level
+
+"show match
+set showmatch                       "show the matched symbols: e.g. ()
+set mat=2                           "match time
+set mps-=[:]                        "match patterns
+
+"hide gui bar and gui menu
+set guioptions-=l
+set guioptions-=L
+set guioptions-=r
+set guioptions-=R
+set guioptions-=m
+set guioptions-=T
+
+"search relate
+"set noignorecase                   "case sensitive : default
+set ignorecase                      "ignore case
+"set ignorecase smartcase           "smart case sensitive (will not ignore case when there is capital form)
+set hlsearch                        "highlight search
+"set nohlsearch
+"set incsearch                      "increase search
+set noincsearch                     "no increase search
+"set wrapscan                       "auto wrap
+set nowrapscan                      "no auto wrap
+
+"buffer quick move, refer to help 08.txt
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+"insert mode quickly move
+inoremap<C-L> <Right>
+inoremap<C-H> <Left>
+inoremap<C-E> <del>
+"inoremap<C-S> <Down>
+"inoremap<C-W> <Up>
+"imap <S-0> <esc>$a
+"imap <S-9> <esc>^i
+"imap <S-8> <esc>0i
+map <silent> <expr> j (v:count == 0 ? 'gj' :'j')
+map <silent> <expr> k (v:count == 0 ? 'gk' :'k')
+
+"ctrl+c/crtl+v
+map<C-V> "+gP
+map<C-C> "+y
+map<C-X> "+x
+
+"status line
+set ruler                           "show the cursor line and row
+set laststatus=2                    "show status line
+if v:version > 703
+    set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]%{EchoFuncGetStatusLine()}
+else
+    set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c]
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"plugin
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let mapleader=","
+
+"BufExplorer.vim
+let g:bufExplorerDefaultHelp=0          "show helps
+
+"ultisnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+"airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline_theme="dark" 
+
+" powerline symbols
+"let g:airline_powerline_fonts = 1
+"if !exists('g:airline_symbols')
+    "let g:airline_symbols = {}
+"endif
+"let g:airline_left_sep = ''
+"let g:airline_left_alt_sep = ''
+"let g:airline_right_sep = ''
+"let g:airline_right_alt_sep = ''
+"let g:airline_symbols.branch = ''
+"let g:airline_symbols.readonly = ''
+"let g:airline_symbols.linenr = '☰'
+"let g:airline_symbols.maxlinenr = ''
+
+map <S-Left>  :bp<CR>
+map <S-Right> :bn<CR>
+
+"ctrlp
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/tmp/*,*.so,*.swp,*.zip,*.png,*.jpg,*.gif,*.html,AndroidAssistant,build-ios
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v(\.git|\.hg|\.svn\|vendor|tmp|AndroidAssistant|build-ios|Dev4Nano|boost|SDKSource|ffmpeg|websocketpp)$',
+    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
+    \ 'link': 'some_bad_symbolic_links',
+    \ }
+
+    "\ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_mruf_max = 500
+let g:ctrlp_follow_symlinks = 1
+"let g:ctrlp_by_filename = 1
+
+"ctrlp-funky
+nnoremap <leader>fu :CtrlPFunky<Cr>
+nnoremap <leader>fi :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+let g:ctrlp_funky_matchtype = 'path'
+let g:ctrlp_funky_syntax_highlight = 1
+let g:ctrlp_funky_multi_buffers = 1
+let g:ctrlp_funky_sort_by_mru = 1
+let g:ctrlp_extensions = ['funky']
+
+"ctags & cscope.vim
+set tags=tags;                      "set ctags obj to current dir
+set tags+=~/.vim/systags_cpp        "add system tags
+set tags+=~/.vim/systags            "add system tags
+
+if has("cscope")                    "auto add cscope.out
+    set csprg=/usr/bin/cscope
+    set cst                         "set tag to cstag
+    set csto=0                      "the cscope will show first then cstag
+    set nocsverb                    "ignore missing cscope.out error
+    set cscopequickfix=s-,g-,c-,d-,i-,t-,e-,f-
+                                    "cscope will match quickfix, '-' will truncate the previors result
+    let cscope=findfile("cscope.out", ".;")
+    if !empty(cscope) && filereadable(cscope)
+        let cscope_pre=getcwd()
+        let cscope_file=printf("%s/%s", cscope_pre, cscope)
+        exe "cs add" cscope_file cscope_pre
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+    set csverb                      "set cscope error prompt
+endif
+
+map<expr><C-]> filewritable(bufname("%"))?"<C-]>,cw":"<C-]>"
+                                    "add quickfix
+
+"ctags usage: ctags -R --c++-kinds=+p --fields=+iaS --extra=+q "c++ tags，params(1)function prototype，(2)class properties，(3)class members
+let cmdline = "-R --c++-kinds=+p --fields=+iaS --extra=+q "
+"rm tags
+map<F6> :!rm -rf ./tags
+"current path tags
+map<F7> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .
+"system tags
+map<F12> :!ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ -I _GLIBCXX_NOEXCEPT -I _M_dataplus --links=no --language-force=c++ --c++-kinds=+l+x+p --fields=+iaSl --extra=+q -R -f ~/.vim/systags_cpp /usr/include/c++;
+            \ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ -I _GLIBCXX_NOEXCEPT -I _M_dataplus --language-force=c --c-kinds=+l+x+p+f --fields=+iaSl --extra=+q -f ~/.vim/systags /usr/include/* /usr/include/sys/* /usr/include/bits/*  /usr/include/netinet/* /usr/include/arpa/* /usr/include/libxml2/libxml/*
+
+"tagbar
+let g:tagbar_ctags_bin='/usr/local/bin/ctags' "ctags path
+let g:tagbar_width=42                   "width
+let g:tagbar_right=1
+let g:tagbar_autofocus=1
+"autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx call tagbar#autoopen() "auto open
+map<silent><leader>tl :TagbarToggle<cr>
+
+"syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_check_on_open=1                 "save will trigger error check
+let g:syntastic_always_populate_loc_list=1      "reduce the clash with other plugins
+let g:syntastic_auto_loc_list=1                 "open automatically when there is error, close the window when there is no error
+let g:syntastic_check_on_wq=0                   "save and quit will not trigger the error check
+let g:syntastic_loc_list_height=5               "the height of the error window
+let g:syntastic_cpp_compiler_options='-std=c++11' "compiler set-up
+"mode map
+let g:syntastic_mode_map = {
+            \ "mode": "passive",
+            \ "active_filetypes": ["lua"],
+            \ "passive_filetypes": [] }
+map<C-F5> :SyntasticCheck<CR>
+
+"showmarks.vim
+"<leader> mt(enable/disable),mh(remove mark),ma(remove marks on this file)
+let g:showmarks_include="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+let showmarks_hlline_lower=1            "highlight
+let showmarks_hlline_upper=1
+let showmarks_ignore_type = "hqm"
+highlight ShowMarksHLl term=reverse ctermbg=13 gui=undercurl guisp=#FFFFFF
+"next/prev
+map<F2> ]`
+map<S-F2> [`
+
+"multi-cursor
+let g:multi_cursor_use_default_mapping=0
+
+let g:multi_cursor_start_word_key      = '<C-n>'
+let g:multi_cursor_select_all_word_key = '<C-a>'
+let g:multi_cursor_start_key           = 'g<C-n>'
+let g:multi_cursor_select_all_key      = 'g<A-n>'
+let g:multi_cursor_next_key            = '<C-n>'
+let g:multi_cursor_prev_key            = '<C-p>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<C-c>'
+
+"omnicomplete.vim & omnicppcomplete.vim
+set completeopt=longest,menu            "disable previous window
+set wildignore=*.o,*.obj,*~,*.pyc       "ignore files
+let OmniCpp_SelectFirstItem=0           "auto select first line
+let OmniCpp_ShowPrototypeInAbbr=1       "prototype of function
+let OmniCpp_DefaultNamespaces=["_GLIBCXX_STD"]
+"insert mapping：<cr> to chose; <c-j> page down; <c-k> page up
+inoremap<expr><cr>	pumvisible()?"\<c-y>":"\<cr>"
+inoremap<expr><c-j>	pumvisible()?"\<PageDown>\<c-n>\<c-p>":"\<c-x><c-o>"
+inoremap<expr><c-k>	pumvisible()?"\<PageUp>\<c-p>\<c-n>":"\<c-k>"
+"insert mapping: complete file name; complete macro; complete tags
+inoremap<c-f> <c-x><c-f>
+inoremap<c-b> <c-x><c-d>
+inoremap<c-]> <c-x><c-]>
+
+"ycm
+let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
+let g:ycm_min_num_of_chars_for_completion=2 "start to complete when user type second char
+let g:ycm_key_list_select_completion=['<c-n>']
+let g:ycm_key_list_previous_completion=['<c-p>']
+let g:ycm_confirm_extra_conf=1              "turn off promption of loading .ycm_extra_conf.py
+let g:ycm_seed_identifiers_with_syntax=1    "syntax completion
+let g:ycm_collect_identifiers_from_tag_files = 1    "collect tags for completion
+let g:ycm_collect_identifiers_from_comments_and_strings = 1 "collect comments and strings for completion
+let g:ycm_complete_in_comments = 1
+let g:ycm_complete_in_strings = 1
+let g:ycm_cache_omnifunc=0
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_error_symbol = '>>'
+let g:ycm_goto_buffer_command = 'vertical-split'
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+inoremap <leader><leader> <C-x><C-o>
+
+"grep.vim
+"quickfix auto popup，grep which files
+"let Grep_OpenQuickfixWindow=1
+"let Grep_Default_Filelist='*.cpp'
+"let Grep_Path='/usr/local/Cellar/grep/3.1/bin/ggrep'
+"grep: n normal, a complete match, c ignore case
+"map<F3>n :Grep<cr>
+"map<F3>a :Grep <C-R>=printf("\\<%s\\>", expand("<cword>"))<cr><cr>
+"map<F3>c :Grep <C-R>=printf("-i %s", expand("<cword>"))<cr><cr>
+
+"ack.vim
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep --smart-case'
+endif
+let g:ackhighlight = 1
+let g:ack_autoclose = 1
+map <c-u> :Ack!<space>
+"set autochdir                       "change the path to current dir
+
+"code_complete.vim
+"cc/cfun/ccla
+"de/in/is/ff
+"wi/for/if/ife
+"main/sw
+"cl/su
+
+"copy to a register
+"<leader>y/d/p
+
+"fold
+"zM/zR/za/zA
+
+"easymotion
+"<leader><leader> b/w
+
+"vim-cpp-enhanced-highlight
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+
+"a.vim
+let g:alternateSearchPath = 'reg:/inc/src/g/,reg:/src/inc/g/'
+"<leader>aa/ii
+
+"nerdcommenter.vim
+"<leader>ci|cs|cc|cu                "single line/multi-lines/part/cancel annotation
+
+"echofunc
+let g:EchoFuncShowOnStatus = 1      "function prototype shows on status line
+
+"nerdtree 
+let NERDTreeShowLineNumbers=1       "line number
+let NERDTreeAutoCenter=1
+let NERDTreeShowHidden=1            "show hidden files
+let NERDTreeWinSize=31              "width
+let g:nerdtree_tabs_open_on_console_startup=1   "one nerdtree instant
+let NERDTreeIgnore=['\.pyc','\~$','\.swp']  "ignore file list
+let g:NERDTreeChDirMode = 1         "auto change directory
+let NERDTreeMinimalUI=1
+"nerdtree git plugin
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"<leader> mapping
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+",ee：edit vimrc; ,ss：reload vimrc; ,<space>：make
+map<silent><leader>ee :e ~/.vimrc<cr>
+map<silent><leader>ss :source ~/.vimrc<cr>
+map<leader><space> :w<cr>:make<cr>
+
+"save/quit/cancel highlight
+nmap <silent> <leader>ww :w<cr>
+nmap <silent> <leader>wf :w!<cr>
+nmap <silent> <leader>wa :wa<cr>
+nmap <silent> <leader>wqa :wqa<cr>
+nmap <silent> <leader>qq :bd<cr>
+nmap <silent> <leader>qf :q!<cr>
+nmap <silent> <leader>qaa :qa<cr>
+nmap <silent> <leader>qaf :qa!<cr>
+nmap <silent> <leader><cr> :noh<cr>
+
+"winmanager:,ww：WMToggle；,cc：minibuf；,ll：taglist
+"map<silent><leader>wm :WMToggle<cr>
+"map<silent><leader>bc :CMiniBufExplorer<cr>
+
+"file explorer
+map<leader>fd :NERDTreeToggle <C-R>=expand("%:p:h")<cr>
+
+"cscope
+"s(symbols)g(defination)c(functions called this this function)t(this string)
+map<silent><leader>ffs :cs find s <C-R>=expand("<cword>")<CR><CR><C-O>,cw
+map<silent><leader>ffg :cs find g <C-R>=expand("<cword>")<CR><CR><C-O>,cw
+map<silent><leader>ffc :cs find c <C-R>=expand("<cword>")<CR><CR><C-O>,cw
+map<silent><leader>fft :cs find t <C-R>=expand("<cword>")<CR><CR><C-O>,cw
+"e(egrep)f(this file)i(files include this file)d(functions called by this function)
+map<silent><leader>ffe :cs find e <C-R>=expand("<cword>")<CR><CR><C-O>,cw
+map<silent><leader>fff :cs find f <C-R>=expand("<cfile>")<CR><CR><C-O>,cw
+map<silent><leader>ffi :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR><C-O>,cw
+map<silent><leader>ffd :cs find d <C-R>=expand("<cword>")<CR><CR><C-O>,cw
+
+"quickfix
+"next/pre; open/close quickfix
+map<silent><leader>cn :cn<cr>
+map<silent><leader>cp :cp<cr>
+map<silent><leader>ck :ccl<cr>
+map<silent><leader>cw :cw 10<cr>
+
+"save the content to specific register
+map<silent><leader>y "ay
+map<silent><leader>d "ad
+map<silent><leader>p "ap
+
+"a.vim
+map<silent><leader>aa :A<cr>
+map<silent><leader>av :AV<cr>
+map<silent><leader>ii :IH<cr>
+
+"auto complete symbols
+inoremap [] []<Esc>i
+inoremap () ()<Esc>i
+inoremap <> <><Esc>i
+inoremap "" <c-r>=QuoteDelim('"')<CR>
+inoremap '' <c-r>=QuoteDelim("'")<CR>
+
+function! QuoteDelim(char)
+    let line = getline('.')
+    let col = col('.')
+    if line[col - 2] == "\\"
+        return a:char
+    elseif line[col - 1] == a:char
+        return "\<Right>"
+    else
+        return a:char.a:char."\<Esc>i"
+    endif
+endf
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"auto command
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"auto reload .vimrc
+"autocmd! bufwritepost .vimrc source ~/.vimrc
+if has("autocmd")
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"backup setting
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"set langmenu=zh_CN.UTF-8           "menu lan
+"language messages zh_CN.UTF-8      "menu lan
+"source $VIMRUNTIME/delmenu.vim     "del menu
+"source $VIMRUNTIME/menu.vim        "import menu
+"set gfn=Bitstream\ Vera\ Sans\ Mono\ 10,Luxi\ Mono\ 10,
+            "\DejaVu\ Sans\ Mono\ 10,Courier\ New\ 10,Courier\ 10,
+            "\SimSun\ 10,WenQuanYi\ Micro\ Hei\ Mono\ 10
+                                    "font
+
+"minibufexpl.vim
+"let g:miniBufExplMapWindowNavVim=1      "enable ctrl+hjkl
+"let g:miniBufExplMapWindowNavArrows=1   "enable ctrl+up/down/leaf/right
+"let g:miniBufExplorerMoreThanOne=1      "minibuf will still enable when there is only one window
+"let g:miniBufExplForceSyntaxEnable=0    "prevent the highlight missing
+"let g:miniBufExplModSelTarget=1         "prevent buff window to occupy the minibuf
+"let g:miniBufExplMapCTabSwitchBufs=1    "set <C-Tab> enable
+
+"winmanager.vim
+"width,quit when only 1 window left, layout
+"let g:winManagerWidth=30
+"let g:persistentBehaviour=0
+"let g:winManagerWindowLayout='TagList'
+
+" tags in work begin
+"if filereadable('/etc/redhat-release')
+    "let envString = system('cat /etc/redhat-release')
+"else
+    "let envString = ""
+"endif
+
+"driver development path
+"if envString != ""
+    "if envString == "Red Hat Enterprise Linux Workstation release 7.2 (Maipo)\n"
+        "let driverWSPath = system('echo -n $WORKSPACE') . '/ph-development/development/'
+        "let driverSourcePath = system('echo -n $WORKSPACE') . '/ph-development/development/drivers/Generic_93K_Driver/'
+        "let handlerSourcePath = system('echo -n $WORKSPACE') . '/ph-development/development/drivers/Generic_93K_Driver/GenericHandler/'
+        "let proberSourcePath = system('echo -n $WORKSPACE') . '/ph-development/development/drivers/Generic_93K_Driver/GenericProber/'
+    "else
+        "let driverWSPath = ''
+        "let driverSourcePath = '/opt/93000/src/tci/'
+        "let handlerSourcePath = '/opt/93000/src/tci/handler/'
+        "let proberSourcePath = '/opt/93000/src/tci/prober/'
+    "endif
+    ""driver package path
+    "let pwdString = system('echo -n $PWD')
+    "if (match(pwdString, 'GenericHandler') != -1)
+        "let pwdString = system('echo -n ${PWD%Generic*}') . "GenericHandler"
+    "elseif (match(pwdString, 'GenericProber') != -1)
+        "let pwdString = system('echo -n ${PWD%Generic*}') . "GenericProber"
+    "endif
+    "let tcctSourcePath = system('echo -n $WORKSPACE') . '/development/integration/cor/tcapi/'
+"endif
+
+"if envString != ""
+    ""package tags
+    "map<F9> :execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q " pwdString
+    ""driver tags
+    "let driverPath = driverSourcePath . "common/mhcom/src/ " . driverSourcePath . "common/tcom/src/ " . driverSourcePath . "common/tools/src " . driverSourcePath . "common/log/src " . driverSourcePath . "common/guiServer/src/ " . driverSourcePath . "common/guiServer/gui/ " . handlerSourcePath . "frame/src/ " . handlerSourcePath . "include/ " . handlerSourcePath . "state/src/ " . proberSourcePath . "frame/src/ " . proberSourcePath . "include/ " . proberSourcePath . "state/src/ " . "."
+    "map<F10> :execute "!ctags " cmdline driverPath
+    ""tcct tags
+    "let tcctPath = tcctSourcePath . "TestCellAPI/Main/ " . tcctSourcePath . "TestCellAccess/Main/ " . driverWSPath . "utility/DriverDevKits/Main " . driverWSPath "integration"
+    "map<F11> :execute "!ctags " cmdline tcctPath driverPath
+"endif
+" tags in work end
+
+"map<C-F11> :!find . -iname "*.h" -o -iname "*.c" -o -iname "*.cpp" -o -iname "*.hpp" > cscope.files<CR>
+            "\:!cscope -Rbkq -i cscope.files -f cscope.out<CR>
+                                    "R recursive，b no gui，k ignore /usr/include，q assistant index
+
+"map<expr><C-F10> cscope_connection()?":cs reset<CR>":":cs add cscope.out<CR>"
+                                    "reload cscope
+
+"taglist.vim
+"let Tlist_Show_One_File=1               "set tlist obj to current file
+"let Tlist_Exit_OnlyWindow=1             "when the tlist is the only window, close it
+"let Tlist_Show_Menu=0                   "dont show the iterm in menu
+"let Tlist_Auto_Open=0
+"let Tlist_Use_Right_Window = 1
+"let Tlist_Show_One_File=1
+"let Tlist_File_Fold_Auto_Close=1
+"let Tlist_WinWidth=42
+"set updatetime=1500                     "flash timing
+
+"hs conf
+"Plugin 'jiangmiao/auto-pairs'
+"" 按下 control+n 调出/隐藏 NERDTree
+"map  <C-n> :NERDTreeToggle<CR>
+"map <C-m> :TlistToggle<CR>
+"let Tlist_File_Fold_Auto_Close=1 "除当前文件其他tag折叠
+" 配置ctrlp-funky
+"nnoremap <C-f>u :CtrlPFunky<Cr>
+"" narrow the list down with a word under cursor
+"nnoremap <C-f>U :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+"let g:ctrlp_funky_syntax_highlight = 1
+"let g:ctrlp_funky_matchtype='path'
+
+

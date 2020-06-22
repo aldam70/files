@@ -1,0 +1,217 @@
+alias ..='cd ..'
+alias h='history'
+alias j='jobs -l'
+alias rm='rm -i'
+
+alias cp='cp -i'
+alias mv='mv -i'
+alias ls='ls --color -G'
+alias la='ls -AG'
+alias lt='ls -lhtrFG'
+alias ll='ls -lhG'
+alias grep='/bin/grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+alias lsusb='system_profiler SPUSBDataType'
+
+# ---------------------------------------
+# -- history ignore
+# ---------------------------------------
+HISTCONTROL=ignoredups
+HISTIGNORE='ls:pwd:clear:fg:bg:jobs:top'
+
+export HISTFILESIZE=1000000000
+export HISTSIZE=1000000
+export PROMPT_COMMAND="history -a"
+export HISTTIMEFORMAT="%Y-%m-%d_%H:%M:%S "
+
+# ---------------------------------------
+# -- identify terminal
+# ---------------------------------------
+
+if [[ -t 0 ]]	# only if stdin is connected to a terminal
+then
+  export TTY_TYPE=`/usr/bin/tset -q`
+  # Linux     Linux text console
+  # xterm     xtem, konsole
+fi
+
+# ---------------------------------------
+# -- set colors
+# ---------------------------------------
+
+case "$TTY_TYPE" in
+"xterm" | "xterm-color" | "vt100" | "xterm-256color")
+NORMAL="[0m"
+BLACK="[30m"     #COLOR "[0m"
+WHITE="[37m"     #COLOR "[0m"
+GREEN="[32m"       #COLOR "[0m"
+RED="[31m"     #COLOR "[0m"
+YELLOW="[33m"    #COLOR "[0m"
+BLUE="[0m[34m"      #COLOR "[0m"
+MAGENTA="[35m"  #COLOR "[0m"
+LIGHTBLUE="[36m" #COLOR "[0m"
+REVYELLOW="[43m" #COLOR "[0m"
+    ;;
+  *)
+    NORMAL=""
+    BLACK=""
+    WHITE=""
+    GREEN=""
+    RED=""
+    YELLOW=""
+    BLUE=""
+    MAGENTA=""
+    LIGHTBLUE=""
+    REVYELLOW=""
+    ;;
+esac
+
+# ---------------------------------------
+# -- set PROMPT
+# ---------------------------------------
+
+#enable bash completion in interactive shells -- for ubuntu
+#if ! shopt -oq posix; then
+    #if [ -f /usr/share/bash-completion/bash_completion ]; then
+        #. /usr/share/bash-completion/bash_completion
+    #elif [ -f /etc/bash_completion ]; then
+        #. /etc/bash_completion
+    #fi
+#fi
+
+function add_git_branch_to_prompt {
+   local c_red='\e[31m'
+   local c_green='\e[0;32m'
+   local c_blue='\e[0;34m'
+   local c_clear='\e[0m'
+   branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+   repo=$(git rev-parse --show-toplevel 2>/dev/null)
+
+   if [[ -n "${ENV_SCM_WORKSPACE_ROOT}" && -n "$branch" ]] ; then
+     echo -e "${c_red}ENV Prepared for: ${c_green}${ENV_SCM_WORKSPACE_ROOT} ${c_clear} Branch for current repo: ${c_green}${branch}${c_clear}"
+   elif [[ -n "${ENV_SCM_WORKSPACE_ROOT}" ]] ; then
+     echo -e "${c_red}ENV Prepared for: ${c_green}${ENV_SCM_WORKSPACE_ROOT} ${c_clear}"
+   fi
+}
+
+PROMPT_COMMAND="add_git_branch_to_prompt"
+
+#set normal prompt
+PS1="\[${RED}\]`hostname`: \[${BLUE}\]\${PWD}\\[${NORMAL}\]\n\[${YELLOW}\]\\u:\[${NORMAL}\]$ "
+
+# Set Prompt for ClearCase-Views
+if [[ -n "${CLEARCASE_ROOT}" ]]
+then
+  PS1="\[${RED}\]`hostname`: \[${GREEN}\]/view/`basename ${CLEARCASE_ROOT}`: \[${BLUE}\]\${PWD}\[${NORMAL}\]
+$ "
+fi
+
+export PS1
+
+# ---------------------------------------
+# -- set function
+# ---------------------------------------
+function ssv
+{
+  typeset PS3="Please select: "
+  typeset SEARCH_PATH
+  if [[ "${1}" = "" ]]
+  then
+    SEARCH_PATH=${LOGNAME}
+  else
+    SEARCH_PATH="$(echo "$@" |/bin/sed -e "s/ /*/g")"
+  fi
+  echo "Searching for viewtags contain \"*${SEARCH_PATH}*\"..."
+  select VIEW in $(/usr/atria/bin/cleartool lsview -s \*${SEARCH_PATH}\*) Quit
+  do
+    if [[ ( "${VIEW}" != Quit ) && ( "${VIEW}" != "" )]]
+    then
+      echo "Set View:${VIEW}"
+      /usr/atria/bin/cleartool setview  "${VIEW}"
+      echo "Leave view:${VIEW}"
+      break
+    else
+      echo "NO VIEW SET"
+      break
+    fi
+  done
+}
+
+function ffile() {
+	#find . -type f -iname '*'$*'*' -ls;
+	find . -type f -iname "*$**" -ls;
+}
+
+function fstr() {
+	OPTIND=1
+    local case=""
+    local usage="fstr: find string in files.
+Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
+    while getopts :it opt
+    do
+        case "$opt" in
+        i) case="-i " ;;
+        *) echo "$usage"; return;;
+        esac
+    done
+    shift $(( $OPTIND - 1 ))
+    if [ "$#" -lt 1 ]; then
+        echo "$usage"
+        return;
+    fi
+    local SMSO=$(tput smso)
+    local RMSO=$(tput rmso)
+    find . -type f -name "${2:-*}" -print0 | xargs -0 grep -sn ${case} "$1" 2>&- | \
+sed "s/$1/${SMSO}\0${RMSO}/gI" | more
+}
+
+#function fexe() {
+	#find . -type f -iname '*'$1'*' -exec "${2:-file}" {} \; ; 
+#}
+
+function cdls() {
+	cd $1;
+	ls;
+}
+
+function up() {
+	local dir=""
+	count=$1
+    for i in $(seq 1 $1)
+    do
+	dir=$dir/..
+	done
+	dir=$(echo $dir | sed 's/^\///')
+	if [ -z "$dir" ];then
+		dir=..
+	fi
+	cd $dir;
+}
+
+#function mkdircd() {
+	#mkdir -p "$@";
+	#cd "$@"
+#}
+#alias mkdir='mkdircd'
+
+function psgrep() {
+	if [ ! -z $1 ];then
+	echo "grepping for processes matching $1..."
+	ps aux | grep -i $1 | grep -v grep
+	else
+	echo "!! need name to grep for"
+	fi
+}
+
+function pscpu() {
+    ps -eo pid,ppid,cmd,%cpu,%mem --sort=-%cpu | head
+}
+
+
+#notes for reference
+#sed -i "N;N;s/\n\nOLDSTRING/NEWSTRING/g" `grep "OLDSTRING" -rl .`
+#socle113.bbn.verigy.net:1 12345678
+#sudo mount -o username=adam.huang,uid=1709 //10.150.10.111/Tuatek\ PC\ Backup/AdamHuang/vfsshared /home/adahuang/mnt/windows/
+#ps -eo pid,ppid,cmd,%cpu,%mem --sort=-%cpu | head
+
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+export HOMEBREW_NO_AUTO_UPDATE=true
